@@ -8,19 +8,38 @@
   </head>
   <body>
     <main>
-      <form action="/user" method="POST" enctype="multipart/form">
-        <label for="username">Username</label><br />
-        <input type="text" id="username" name="username" /><br />
-        <label for="password">Password</label><br />
-        <input
-          type="password"
-          id="password"
-          name="pass"
-          minlength="8"
-          required
-        /><br />
-        <input type="submit" id="submit-btn" value="Login" />
-      </form>
+      <div style="border: 1px solid black">
+        <hi>Create User</hi>
+        <form action="/user" method="POST">
+          <label for="username">Username</label><br />
+          <input type="text" id="username" name="username" /><br />
+          <label for="password">Password</label><br />
+          <input
+            type="password"
+            id="password"
+            name="pass"
+            minlength="8"
+            required
+          /><br />
+          <input type="submit" id="submit-btn" value="Login" />
+        </form>
+      </div>
+      <div style="border: 1px solid black">
+        <hi>Login</hi>
+        <form action="/login" method="POST">
+          <label for="username">Username</label><br />
+          <input type="text" id="username" name="username" /><br />
+          <label for="password">Password</label><br />
+          <input
+            type="password"
+            id="password"
+            name="pass"
+            minlength="8"
+            required
+          /><br />
+          <input type="submit" id="submit-btn" value="Login" />
+        </form>
+      </div>
     </main>
   </body>
 </html>

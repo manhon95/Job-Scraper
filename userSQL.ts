@@ -1,6 +1,4 @@
-import pfs from "fs/promises";
-import fs from "fs";
-import { Client } from "pg";
+import { Client, QueryResult } from "pg";
 
 export type User = {
   id: string;
@@ -24,6 +22,8 @@ export class UserSQLDb {
   }
 
   async createUser(newUser: User): Promise<void> {
+    console.log(newUser.username);
+    console.log(newUser.pass);
     await this.client.query(
       'insert into "users" (username, pass) values ($1, $2)',
       [newUser.username, newUser.pass]
@@ -31,16 +31,27 @@ export class UserSQLDb {
   }
 
   async getUserById(uid: string): Promise<User> {
-    return await this.client.query('select * from "users" where id = $1', [
-      uid,
-    ])[0];
+    let result: QueryResult = await this.client.query(
+      'select * from "users" where id = $1',
+      [uid]
+    );
+    const user = result.rows[0];
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
   }
 
   async getUserByName(username: string): Promise<User> {
-    return await this.client.query(
+    let result: QueryResult = await this.client.query(
       'select * from "users" where username = $1',
       [username]
-    )[0];
+    );
+    const user = result.rows[0];
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
   }
 
   async updateUser(newUserInfo: User): Promise<void> {
@@ -52,5 +63,14 @@ export class UserSQLDb {
 
   async deleteUser(oldUser: User): Promise<void> {
     await this.client.query('delete from "users" where id = $1', [oldUser.id]);
+  }
+
+  async login(inputUsername: string, inputPass: string): Promise<User> {
+    let user: User = await this.getUserByName(inputUsername);
+    if (user.pass === inputPass) {
+      return user;
+    } else {
+      throw new Error("Invalid password");
+    }
   }
 }
