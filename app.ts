@@ -85,8 +85,8 @@ export class AppComponent {
     });
     /* ------------------------------- Update user ------------------------------ */
     this.app.put("/user", async (req: Request, res: Response) => {
+      await this.userDb.updateUser(req.body);
       try {
-        await this.userDb.updateUser(req.body);
       } catch (error) {
         res.status(400).send(error);
       }
